@@ -2,7 +2,7 @@ package com.bank.management.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.security.crypto.password.PasswordEncoder; // Importante
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.bank.management.dto.request.CreateUsersDTO;
 import com.bank.management.dto.request.UpdateUsersDTO;
@@ -41,25 +41,20 @@ public class UsersServiceImpl implements UsersService {
 
 
     @Override
-    @Transactional // Asegura que el registro de usuario y cuenta sea una sola operación atómica
+    @Transactional 
     public UsersDTO save(CreateUsersDTO createUsersDTO) {
-        // 1. Validar duplicados
+
         if (usersRepository.findByDni(createUsersDTO.getDni()).isPresent()) {
             throw new DuplicatedDataException("Users", createUsersDTO.getDni());
         }
         if (usersRepository.findByEmail(createUsersDTO.getEmail()).isPresent()) {
             throw new DuplicatedDataException("Users", createUsersDTO.getEmail());
         }
-
-        // 2. DECLARAR e INICIALIZAR la entidad 'user'
-        // ⬇️ ¡SOLUCIÓN para el error 'cannot find symbol: variable user' en la línea 43!
         Users user = usersMapper.toEntity(createUsersDTO);
         user.setPassword(passwordEncoder.encode(createUsersDTO.getPassword()));
 
-        // 3. Guardar el User
         Users savedUser = usersRepository.save(user);
 
-        // 4. Crear la Account Principal (Lógica de tu negocio)
         Account principalAccount = new Account();
         principalAccount.setAccountNumber(savedUser.getDni());
         principalAccount.setSaldo(100000.00);
@@ -68,7 +63,6 @@ public class UsersServiceImpl implements UsersService {
 
         Account savedAccount = accountRepository.save(principalAccount);
 
-        // 5. Establecer la relación bidireccional (CRÍTICO para que el DTO funcione)
         if (savedUser.getAccounts() == null) {
             savedUser.setAccounts(new ArrayList<>());
         }
@@ -78,12 +72,10 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
-    private String createAccountNumber(String dni) {
-        // Implementación de ejemplo para generar un número único
-        // Se recomienda usar algo más robusto, pero esto sirve para probar.
+    /*private String createAccountNumber(String dni) {
         return "4050-" + dni.substring(0, Math.min(dni.length(), 6)) + "-"
                 + System.currentTimeMillis() % 1000;
-    }
+    }*/
 
     @Override
     public List<UsersDTO> getAll() {
@@ -92,18 +84,16 @@ public class UsersServiceImpl implements UsersService {
 
 
     @Override
-    @Transactional(readOnly = true) // 1. CRÍTICO: Abre la sesión JPA para permitir la carga LAZY
+    @Transactional(readOnly = true)
     public UsersDTO getById(Long id) {
 
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException(id, "Users"));
 
-        // 2. 🚨 CRÍTICO: Forzar la inicialización de la colección 'accounts' (Lazy Loading)
         if (user.getAccounts() != null) {
-            user.getAccounts().size(); // Inicializa la lista leyendo su tamaño
+            user.getAccounts().size();
         }
 
-        // 3. Ahora el mapeador puede acceder a los datos de la cuenta sin excepción.
         return usersMapper.toDTO(user);
     }
 
@@ -128,24 +118,19 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    @Transactional(readOnly = true) // ⬅️ 'readOnly = true' está BIEN aquí
+    @Transactional(readOnly = true)
     public UsersDTO authenticate(String email, String password) {
-        // 1. Buscar al usuario
         Users user = usersRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Email o contraseña incorrectos"));
 
-        // 2. Validar la contraseña
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new ResourceNotFoundException("Email o contraseña incorrectos");
         }
 
-        // 3. Forzar carga LAZY (igual que en getById) antes de mapear
-        //    Esto es necesario para que el mapper 'toDTO' pueda leer las cuentas.
         if (user.getAccounts() != null) {
             user.getAccounts().size();
         }
 
-        // 4. Mapear y devolver el DTO
         return usersMapper.toDTO(user);
     }
 }

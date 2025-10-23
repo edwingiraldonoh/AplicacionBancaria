@@ -8,7 +8,6 @@ import com.bank.management.exceptions.DataNotFoundException;
 import com.bank.management.exceptions.ResourceNotFoundException;
 import com.bank.management.mapper.AccountMapper;
 import com.bank.management.repository.AccountRepository;
-import com.bank.management.repository.UsersRepository;
 import com.bank.management.service.AccountService;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +17,11 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
-    private final UsersRepository usersRepository;
     private final AccountMapper mapper;
 
 
-    public AccountServiceImpl(AccountRepository accountRepository, UsersRepository usersRepository, AccountMapper mapper) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountMapper mapper) {
         this.accountRepository = accountRepository;
-        this.usersRepository = usersRepository;
         this.mapper = mapper;
     }
 

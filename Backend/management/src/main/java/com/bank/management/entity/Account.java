@@ -2,7 +2,6 @@ package com.bank.management.entity;
 
 
 import jakarta.persistence.*;
-import com.bank.management.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

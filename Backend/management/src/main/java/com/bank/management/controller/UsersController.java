@@ -16,7 +16,6 @@ import com.bank.management.dto.request.CreateUsersDTO;
 import com.bank.management.dto.request.LoginRequest;
 import com.bank.management.dto.request.UpdateUsersDTO;
 import com.bank.management.dto.response.UsersDTO;
-import com.bank.management.entity.Users;
 import com.bank.management.service.UsersService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

@@ -1,6 +1,5 @@
 package com.bank.management.dto.request;
 
-import jakarta.validation.constraints.Negative;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;

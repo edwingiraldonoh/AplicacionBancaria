@@ -3,7 +3,6 @@ package com.bank.management.service;
 import com.bank.management.dto.request.CreateUsersDTO;
 import com.bank.management.dto.request.UpdateUsersDTO;
 import com.bank.management.dto.response.UsersDTO;
-import com.bank.management.entity.Users;
 import java.util.List;
 
 public interface UsersService {
