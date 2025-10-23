@@ -1,0 +1,594 @@
+/* =============================================== */
+/* VARIABLES GLOBALES */
+/* =============================================== */
+:root {
+    --primary-color: #e73a3a;
+    --secondary-color: #b30f0f;
+    --accent-color: #e60e0e;
+    --background-color: #ffffff;
+    --tarjeta-bg: #ffffff;
+    --text-color: #5a2a2a;
+    --error-color: #d11b1b;
+    --success-color: #38a169;
+}
+
+/* =============================================== */
+/* RESET Y ESTILOS BASE */
+/* =============================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+/* =============================================== */
+/* ESTILOS PARA PÁGINAS DE AUTENTICACIÓN (LOGIN/REGISTRO) */
+/* =============================================== */
+
+/* Fondo para páginas de auth */
+body:has(.auth-container) {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 95vh;
+    padding: 20px;
+}
+
+/* Ocultar header en páginas de auth */
+body:has(.auth-container) .barra-de-navegacion {
+    display: none !important;
+}
+
+/* Contenedor principal de auth */
+.auth-container {
+    width: 85%;
+    max-width: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedores individuales de auth */
+.auth-container .container {
+    width: 95%;
+    display: none;
+}
+
+.auth-container .container.activo {
+    display: block;
+    animation: slideIn 0.5s ease-out;
+}
+
+/* Tarjeta de auth */
+.auth-container .tarjeta {
+    background: var(--tarjeta-bg);
+    padding: 15px 20px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(255, 107, 107, 0.25);
+    border: 3px solid var(--primary-color);
+    text-align: center;
+}
+
+/* Títulos de auth */
+.auth-container .tarjeta h1 {
+    color: var(--primary-color);
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.auth-container .tarjeta h2 {
+    color: var(--text-color);
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 1rem;
+}
+
+/* Formularios de auth */
+.auth-container form {
+    width: 100%;
+    text-align: left;
+}
+
+.auth-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 300;
+    color: var(--primary-color);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="email"],
+.auth-container input[type="password"] {
+    width: 100%;
+    padding: 16px 20px;
+    margin-bottom: 1.5rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 12px;
+    font-size: 16px;
+    background: var(--background-color);
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.auth-container input:focus {
+    border-color: var(--accent-color);
+    background: white;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Botones de auth */
+.auth-container button[type="submit"] {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border: none;
+    padding: 18px 30px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-container button[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+}
+
+/* Enlaces de auth */
+.auth-container a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+}
+
+.auth-container a:hover {
+    color: var(--accent-color);
+    background: rgba(231, 58, 58, 0.1);
+    border-color: var(--primary-color);
+}
+
+/* Mensajes de error en auth */
+.auth-container .mensaje-error {
+    background: linear-gradient(135deg, var(--error-color) 0%, #c53030 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin: 1rem 0;
+    font-weight: 600;
+    text-align: center;
+    animation: shake 0.5s ease-in-out;
+}
+
+/* =============================================== */
+/* ESTILOS PARA EL DASHBOARD */
+/* =============================================== */
+
+/* Fondo para dashboard */
+body:not(:has(.auth-container)) {
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header del dashboard */
+.barra-de-navegacion {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#navegacion-principal {
+    display: flex;
+    gap: 15px;
+}
+
+.item-de-navegacion {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.item-de-navegacion:hover,
+.item-de-navegacion.activo {
+    background: rgba(255, 255, 255, 0.2);
+    color: rgb(0, 0, 0);
+}
+
+/* Contenido principal del dashboard */
+.main-content {
+    flex-grow: 1;
+    width: 100%;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Mensaje de bienvenida */
+.main-content h2 {
+    color: var(--primary-color);
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#nombre-de-cliente {
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Grid de información */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
+
+.info-tarjeta {
+    background: var(--tarjeta-bg);
+    color: var(--text-color);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.15);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid var(--primary-color);
+}
+
+.info-tarjeta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(255, 107, 107, 0.25);
+}
+
+.info-tarjeta h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary-color);
+}
+
+.info-value {
+    font-size: 32px !important;
+    font-weight: 800;
+    margin: 0;
+    color: var(--accent-color) !important;
+}
+
+/* Tarjeta de saldo especial */
+.info-tarjeta.saldo-card {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border: none;
+}
+
+.info-tarjeta.saldo-card h3,
+.info-tarjeta.saldo-card .info-value {
+    color: white !important;
+}
+
+/* Secciones del dashboard */
+#content-transacciones,
+#content-cuentas,
+#content-ajustes {
+    background: var(--tarjeta-bg);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.1);
+    margin: 30px 0;
+    border: 2px solid var(--primary-color);
+}
+
+#content-transacciones h3,
+#content-cuentas h3,
+#content-ajustes h3 {
+    color: var(--primary-color);
+    font-size: 26px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 700;
+}
+
+/* Formularios del dashboard */
+.formulario-accion {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.formulario-accion label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.formulario-accion input,
+.formulario-accion select {
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    border: 2px solid var(--primary-color);
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: var(--background-color);
+}
+
+.formulario-accion input:focus,
+.formulario-accion select:focus {
+    border-color: var(--accent-color);
+    background: white;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+}
+
+.formulario-accion button[type="submit"] {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border: none;
+    padding: 18px 30px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.formulario-accion button[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+}
+
+/* Lista de cuentas */
+#lista-de-cuentas {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+#lista-de-cuentas li {
+    background: var(--background-color);
+    padding: 20px 25px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+#lista-de-cuentas li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.1);
+}
+
+/* Mensajes de error generales */
+.mensaje-error {
+    background: linear-gradient(135deg, var(--error-color) 0%, #c53030 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Vistas del dashboard */
+.vista-contenedor {
+    display: none;
+    padding: 20px 0;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.vista-contenedor.activo {
+    display: block;
+}
+
+/* =============================================== */
+/* ANIMACIONES */
+/* =============================================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+@keyframes saldoUpdate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); color: var(--accent-color); }
+    100% { transform: scale(1); }
+}
+
+.saldo-updating {
+    animation: saldoUpdate 0.6s ease-in-out;
+}
+
+/* =============================================== */
+/* RESPONSIVE */
+/* =============================================== */
+@media (max-width: 768px) {
+    /* Auth responsive */
+    body:has(.auth-container) {
+        padding: 15px;
+    }
+
+    .auth-container .tarjeta {
+        padding: 30px 25px;
+    }
+
+    .auth-container .tarjeta h1 {
+        font-size: 2.2rem;
+    }
+
+    .auth-container .tarjeta h2 {
+        font-size: 1.5rem;
+    }
+
+    /* Dashboard responsive */
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .info-tarjeta {
+        padding: 25px 20px;
+    }
+
+    #content-transacciones,
+    #content-cuentas,
+    #content-ajustes {
+        padding: 25px 20px;
+        margin: 20px 0;
+    }
+
+    .main-content h2 {
+        font-size: 26px;
+    }
+
+    #navegacion-principal {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+    }
+
+    #navegacion-principal.activo {
+        display: flex;
+    }
+
+    .item-de-navegacion {
+        margin: 0;
+        padding: 15px 30px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+
+    .alternar-menu {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Auth mobile */
+    .auth-container .tarjeta {
+        padding: 25px 20px;
+    }
+
+    .auth-container .tarjeta h1 {
+        font-size: 2rem;
+    }
+
+    .auth-container input[type="text"],
+    .auth-container input[type="email"],
+    .auth-container input[type="password"] {
+        padding: 14px 16px;
+    }
+
+    .auth-container button[type="submit"] {
+        padding: 16px 25px;
+    }
+
+    /* Dashboard mobile */
+    .main-content {
+        padding: 15px;
+    }
+}
+
+/* =============================================== */
+/* MEJORAS DE ACCESIBILIDAD */
+/* =============================================== */
+.auth-container input:required {
+    border-left: 4px solid var(--primary-color);
+}
+
+.auth-container input:valid:not(:placeholder-shown) {
+    border-left: 4px solid var(--success-color);
+}
+
+.auth-container input:invalid:not(:placeholder-shown) {
+    border-left: 4px solid var(--error-color);
+}
+
+/* Transiciones para cambiar entre login/registro */
+#pagina-inicio,
+#pagina-registro {
+    transition: all 0.5s ease-in-out;
+}

@@ -1,0 +1,46 @@
+<%- include('partials/header', { title: 'Bienvenido - Banco Regional' }) %>
+
+<div class="auth-container">
+
+    <main id="pagina-inicio" class="container activo">
+        <div class="tarjeta">
+            <h1>Banco Regional</h1>
+            <h2>Iniciar Sesión</h2>
+            <form action="/users/login" method="POST">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required>
+
+                <% if (messages.error) { %>
+                    <p class="mensaje-error"><%= messages.error %></p>
+                <% } %>
+
+                <button type="submit">Entrar</button>
+                <a href="#" id="alternar-registro">¿No tienes cuenta? Regístrate</a>
+            </form>
+        </div>
+    </main>
+
+    <main id="pagina-registro" class="container">
+        <div class="tarjeta">
+            <h1>Banco Regional</h1>
+            <h2>Crear Cuenta</h2>
+            <form action="/users/register" method="POST">
+                <label for="registro-name">Nombre:</label>
+                <input type="text" id="registro-name" name="name" required>
+                <label for="registro-dni">DNI:</label>
+                <input type="text" id="registro-dni" name="dni" required pattern="[0-9]{10}" title="DNI debe tener 10 números">
+                <label for="registro-email">Email:</label>
+                <input type="email" id="registro-email" name="email" required>
+                <label for="registro-password">Contraseña:</label>
+                <input type="password" id="registro-password" name="password" required minlength="8">
+                <button type="submit">Registrarse</button>
+                <a href="#" id="alternar-inicio">¿Ya tienes cuenta? Inicia Sesión</a>
+            </form>
+        </div>
+    </main>
+
+</div>
+
+<%- include('partials/footer.ejs', { script: 'auth' }) %>

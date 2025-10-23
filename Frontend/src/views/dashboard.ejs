@@ -1,0 +1,141 @@
+<%- include('partials/header', { title: 'Panel de Control' }) %>
+
+    <div id="panel-de-control">
+        <nav id="navegacion-principal">
+            <a href="#" class="item-de-navegacion activo" data-content="inicio">Inicio</a>
+            <a href="#" class="item-de-navegacion" data-content="transacciones">Transacciones</a>
+            <a href="#" class="item-de-navegacion" data-content="cuentas">Cuentas</a>
+            <!--<a href="#" class="item-de-navegacion" data-content="ajustes">Ajustes</a>-->
+            <a href="/logout" class="item-de-navegacion" id="boton-cerrar-sesion">Cerrar Sesión</a>
+        </nav>
+
+        <main class="main-content">
+            <% if (typeof user !=='undefined' ) { %>
+                <!-- Pasamos el ID del usuario al frontend para usarlo en las llamadas a la API -->
+                <h2 data-user-id="<%= user.userId %>" data-user-dni="<%= user.dni %>">
+                    Bienvenido, <span id="nombre-de-cliente">
+                        <%= user.name %>
+                    </span>
+                </h2>
+                <div id="dynamic-content">
+                    <div id="content-inicio" class="vista-contenedor activo">
+                        <div class="info-grid">
+                            <div class="info-tarjeta">
+                                <h3>NÚMERO DE CUENTA</h3>
+                                <div class="info-value" id="cuenta-numero">
+                                    <%= user.dni || 'N/A' %>
+                                </div>
+                            </div>
+
+                            <div class="info-tarjeta saldo-card">
+                                <h3>SALDO DISPONIBLE</h3>
+                                <div class="info-value" id="cuenta-saldo">$ <%= user.saldo ?
+                                        user.saldo.toLocaleString('es-CO') : '0.00' %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vista de Transacciones -->
+                    <div id="content-transacciones" class="vista-contenedor">
+                        <h3>Realizar Transferencia</h3>
+                        <form id="formulario-de-transaccion" class="formulario-accion">
+
+                            <input type="hidden" id="from-account-dni" value="<%= user.dni %>">
+
+                            <label for="to-account-number">Número de Cuenta de Destino (DNI):</label>
+                            <input type="text" id="to-account-number" placeholder="DNI del beneficiario" required>
+
+                            <label for="transaction-amount">Monto:</label>
+                            <input type="number" id="transaction-amount" placeholder="0.00" required min="1"
+                                step="0.01">
+
+                            <p id="error-en-transaccion" class="mensaje-error" style="display: none;"></p>
+                            <button type="submit">Transferir Dinero</button>
+                        </form>
+                    </div>
+
+                    <!-- Vista de Cuentas -->
+                    <div id="content-cuentas" class="vista-contenedor">
+                        <h3>Asociar Nueva Cuenta</h3>
+                        <form id="formulario-crear-cuenta" class="formulario-accion">
+                            <label for="nuevo-numero-cuenta">Número de Cuenta (DNI):</label>
+                            <input type="text" id="nuevo-numero-cuenta" value="<%= user.dni %>" readonly disabled>
+
+                            <label for="nuevo-tipo-cuenta">Tipo de Cuenta:</label>
+                            <select id="nuevo-tipo-cuenta" required>
+                                <option value="AHORRO">Ahorro</option>
+                                <option value="CORRIENTE">Corriente</option>
+                            </select>
+
+                            <label for="nuevo-saldo-inicial">Saldo Inicial:</label>
+                            <input type="number" id="nuevo-saldo-inicial" step="0.01" min="0" required value="0">
+
+                            <p id="error-crear-cuenta" class="mensaje-error" style="display: none;"></p>
+                            <button type="submit">Crear Cuenta</button>
+                        </form>
+
+                        <div class="accion-de-actividad">
+                            <h3>Mis Cuentas</h3>
+                            <ul id="lista-de-cuentas">
+                                <% if (user.dni) { %>
+                                    <li>
+                                        <span>
+                                            <%= user.dni %> (Cuenta Principal)
+                                        </span>
+                                        <span>$ <%= user.saldo ? user.saldo.toLocaleString('es-CO') : '0.00' %></span>
+                                    </li>
+                                    <% } %>
+                            </ul>
+                        </div>
+
+                        <!-- Vista de Operaciones -->
+                        <div id="content-operaciones" class="vista-contenedor">
+                            <h3>Historial General de Operaciones</h3>
+                            <p>Selecciona una cuenta en la pestaña 'Inicio' para ver su historial detallado.</p>
+                        </div>
+
+                        <!-- Vista de Ajustes -->
+                        <div id="content-ajustes" class="vista-contenedor">
+                            <h3>Cambiar Contraseña</h3>
+                            <form id="formulario-de-cambio-de-contraseña" class="formulario-accion">
+                                <label for="vieja-contraseña">Contraseña Actual:</label>
+                                <input type="password" id="vieja-contraseña" required>
+
+                                <label for="nueva-contraseña">Nueva Contraseña:</label>
+                                <input type="password" id="nueva-contraseña" required minlength="8">
+                                <small>Mínimo 8 caracteres.</small>
+
+                                <label for="confirmar-contraseña">Confirmar Nueva Contraseña:</label>
+                                <input type="password" id="confirmar-contraseña" required>
+
+                                <p id="contraseña-erronea" class="mensaje-error" style="display: none;"></p>
+                                <button type="submit">Actualizar Contraseña</button>
+                            </form>
+                        </div>
+
+                    </div>
+        </main>
+        <% } else { %>
+            <h2>Bienvenido</h2>
+            <p>No se pudieron cargar los datos del usuario.</p>
+            <% } %>
+    </div>
+
+    <script>
+        if (typeof user !== 'undefined' && user) {
+            // Guardar usuario en sessionStorage para las llamadas API
+            sessionStorage.setItem('user', '<%- JSON.stringify(user) %>');
+
+            // Debug: ver estructura del usuario
+            console.log('Usuario guardado en sessionStorage:', JSON.stringify(user));
+            if (user.account) {
+                console.log('Cuenta del usuario:', JSON.stringify(user.account));
+            }
+        } else {
+            console.warn('No se encontraron datos de usuario para guardar en sessionStorage');
+        }
+    </script>
+
+    <script src="/js/api.js"></script>
+    <%- include('partials/footer', { script: 'dashboard' }) %>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title + ' - Banco Regional' : 'Banco Regional' %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <% if (typeof hideNav === 'undefined' || !hideNav) { %>
+        <header class="barra-de-navegacion">
+            <div class="logo">Banco Regional</div>
+            <!-- Tu navegación normal aquí -->
+        </header>
+    <% } %>
